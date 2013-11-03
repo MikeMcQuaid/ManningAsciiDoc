@@ -1,0 +1,8 @@
+AAMakePDF/
+input/
+output/
+vendor/
+.bundle
+.gitmodules
+.rbenv-version
+book.*
