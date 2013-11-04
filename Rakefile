@@ -20,9 +20,8 @@ BOOK_XSLT = "#{FileUtils.pwd}/docbook-to-manning-book.xslt"
 
 BOOK_SCHEMA = 'https://author.manning.com/resources/schemas/manning-book.xsd'
 
-BOOK_TITLE = "#{INPUT_PATH}/Title.adoc"
-BOOK_PREAMBLE = "#{INPUT_PATH}/00-Preamble.adoc"
-BOOK_PATHS = FileList["#{INPUT_PATH}/*.*"].exclude(BOOK_TITLE, BOOK_PREAMBLE)
+BOOK_TITLE = "#{INPUT_PATH}/TitleAndPreamble.adoc"
+BOOK_PATHS = FileList["#{INPUT_PATH}/*.*"].exclude(BOOK_TITLE)
 BOOK_FILES = BOOK_PATHS.sub("#{INPUT_PATH}/", '')
 BOOK_XML_PATHS = BOOK_PATHS.sub(INPUT_PATH, OUTPUT_PATH).ext('.xml')
 BOOK_XML_FILES = BOOK_XML_PATHS.sub("#{OUTPUT_PATH}/", '')
@@ -82,16 +81,15 @@ def asciidoctor backend, output_file, *files
   Asciidoctor.render input, options
 end
 
-file BOOK_HTML5 => [OUTPUT_DIRECTORY, BOOK_TITLE, BOOK_PREAMBLE,
+file BOOK_HTML5 => [OUTPUT_DIRECTORY, BOOK_TITLE,
                     *BOOK_PATHS, *BOOK_OUTPUT_IMAGES] do
   FileUtils.cd INPUT_PATH do
-    asciidoctor :html5, BOOK_HTML5, BOOK_TITLE, BOOK_PREAMBLE, BOOK_FILES
+    asciidoctor :html5, BOOK_HTML5, BOOK_TITLE, BOOK_FILES
   end
   FileUtils.ln_sf BOOK_HTML5, "#{OUTPUT_PATH}/index.html"
 end
 
-file BOOK_DOCBOOK => [BOOK_TITLE, BOOK_PREAMBLE,
-                      *BOOK_XML_PATHS, *BOOK_OUTPUT_IMAGES] do
+file BOOK_DOCBOOK => [BOOK_TITLE, *BOOK_XML_PATHS, *BOOK_OUTPUT_IMAGES] do
   FileUtils.cd INPUT_PATH do
     asciidoctor :docbook45, BOOK_DOCBOOK, BOOK_TITLE, BOOK_FILES
     validate BOOK_DOCBOOK
