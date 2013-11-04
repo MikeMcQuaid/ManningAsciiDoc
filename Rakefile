@@ -56,7 +56,7 @@ def validate file
   document = Nokogiri::XML IO.read file
   xsd = Nokogiri::XML::Schema IO.read BOOK_XSD
   errors = xsd.validate document
-  errors.each {|error| puts error }
+  errors.each {|error| puts "#{file}:#{error.line}\n#{error}\n" }
   raise 'XML schema validation failed!' if errors.any?
 end
 
