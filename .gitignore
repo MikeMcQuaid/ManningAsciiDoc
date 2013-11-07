@@ -4,5 +4,5 @@ output/
 vendor/
 .bundle
 .gitmodules
-.rbenv-version
+.ruby-version
 book.*
