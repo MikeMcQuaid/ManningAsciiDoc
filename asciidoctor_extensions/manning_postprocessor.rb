@@ -23,9 +23,11 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
     remove_attribute 'orderedlist', 'numeration'
 
     nodes('part/para').each do |para|
-      partintro = @document.create_element 'partintro'
-      para.previous = partintro
-      para.parent = partintro
+      unless @partintro
+        @partintro = @document.create_element 'partintro'
+        para.previous = @partintro
+      end
+      para.parent = @partintro
     end
 
     nodes('formalpara/para/screen').each do |screen|
@@ -52,6 +54,9 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
 
     output = @document.to_xml(:encoding => 'UTF-8', :indent => 2)
     output.gsub! ' standalone="no"', ''
+    @document = nil
+    @partintro = nil
+
     output
   end
 
