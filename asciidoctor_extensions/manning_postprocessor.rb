@@ -22,12 +22,15 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
     remove 'mediaobject/caption'
     remove_attribute 'orderedlist', 'numeration'
 
-    nodes('part/para').each do |para|
-      unless @partintro
-        @partintro = @document.create_element 'partintro'
-        para.previous = @partintro
+    nodes('part').each do |part|
+      partintro = part.search("./partintro").first
+      unless partintro
+        partintro = @document.create_element 'partintro'
+        part.children.first.next = partintro
       end
-      para.parent = @partintro
+      part.search("./para").each do |para|
+        para.parent = partintro
+      end
     end
 
     nodes('formalpara/para/screen').each do |screen|
@@ -54,9 +57,6 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
 
     output = @document.to_xml(:encoding => 'UTF-8', :indent => 2)
     output.gsub! ' standalone="no"', ''
-    @document = nil
-    @partintro = nil
-
     output
   end
 
