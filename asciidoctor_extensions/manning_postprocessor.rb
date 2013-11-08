@@ -10,17 +10,19 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
   }
 
   def process output
-    if output.start_with? '<simpara>'
+    if output.start_with? '<simpara'
       output = "<preface><title/>#{output}</preface>"
     end
-
     output.gsub! /<!DOCTYPE.*>/, ''
 
     @document = Nokogiri::XML output, &:noblanks
     @document.remove_namespaces!
 
-    return output unless @document.root
-    @document.root.default_namespace = BOOK_XMLNS
+    root = @document.root
+    return output unless root
+    root.name = 'chapter' if root.name == 'preface'
+    root.default_namespace = BOOK_XMLNS
+
     ELEMENTS_MAP.each {|path, new_name| rename path, new_name }
 
     remove 'bookinfo/date'
