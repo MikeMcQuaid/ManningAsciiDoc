@@ -5,6 +5,10 @@ require 'asciidoctor'
 require 'asciidoctor/extensions'
 require './asciidoctor_extensions/manning_postprocessor'
 
+Asciidoctor::Extensions.register do
+  postprocessor ManningPostprocessor
+end
+
 INPUT_DIRECTORY = "input"
 OUTPUT_DIRECTORY = "output"
 INPUT_PATH = "#{FileUtils.pwd}/#{INPUT_DIRECTORY}"
@@ -72,12 +76,6 @@ def asciidoctor backend, output_file, *files
     :to_file => output_file,
     :safe => Asciidoctor::SafeMode::UNSAFE,
   }
-  if backend == :docbook45
-    Asciidoctor::Extensions.register do
-      postprocessor ManningPostprocessor
-    end
-  end
-
   Asciidoctor.render input, options
 end
 
