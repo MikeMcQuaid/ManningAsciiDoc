@@ -10,6 +10,10 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
   }
 
   def process output
+    if output.start_with? '<simpara>'
+      output = "<preface><title/>#{output}</preface>"
+    end
+
     output.gsub! /<!DOCTYPE.*>/, ''
 
     @document = Nokogiri::XML output, &:noblanks
