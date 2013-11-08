@@ -14,6 +14,8 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
 
     @document = Nokogiri::XML output, &:noblanks
     @document.remove_namespaces!
+
+    return output unless @document.root
     @document.root.default_namespace = BOOK_XMLNS
     ELEMENTS_MAP.each {|path, new_name| rename path, new_name }
 
