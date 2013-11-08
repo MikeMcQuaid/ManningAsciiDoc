@@ -10,6 +10,8 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
   }
 
   def process output
+    return output if output.start_with? '<!DOCTYPE html>'
+
     if output.start_with? '<simpara'
       output = "<preface><title/>#{output}</preface>"
     end
@@ -20,6 +22,7 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
 
     root = @document.root
     return output unless root
+
     root.name = 'chapter' if root.name == 'preface'
     root.default_namespace = BOOK_XMLNS
 
