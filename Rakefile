@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'rake'
 require 'rake/clean'
+require 'erb'
 require 'asciidoctor'
 require 'asciidoctor/extensions'
 require './asciidoctor_extensions/manning_postprocessor'
