@@ -87,19 +87,19 @@ file BOOK_HTML5 => [OUTPUT_DIRECTORY, BOOK_TITLE,
   FileUtils.ln_sf BOOK_HTML5, "#{OUTPUT_PATH}/index.html"
 end
 
-file BOOK_DOCBOOK => [BOOK_TITLE, *BOOK_XML_PATHS, *BOOK_OUTPUT_IMAGES] do
-  FileUtils.cd INPUT_PATH do
-    asciidoctor :docbook45, BOOK_DOCBOOK, BOOK_TITLE, BOOK_FILES
-    validate BOOK_DOCBOOK
-  end
-end
-
 file BOOK_PDF => BOOK_DOCBOOK do
   sh 'AAMakePDF/createPDF.sh', BOOK_DOCBOOK, BOOK_PDF, 'AAMakePDF/'
   FileUtils.rm "#{OUTPUT_DIRECTORY}/book.xml.temp.xml"
   FileUtils.rm 'c:\sw\text.txt'
   FileUtils.rm 'AAMakePDF/temp.xml'
   FileUtils.ln_sf BOOK_PDF, "book.pdf"
+end
+
+file BOOK_DOCBOOK => [BOOK_TITLE, *BOOK_XML_PATHS, *BOOK_OUTPUT_IMAGES] do
+  FileUtils.cd INPUT_PATH do
+    asciidoctor :docbook45, BOOK_DOCBOOK, BOOK_TITLE, BOOK_FILES
+    validate BOOK_DOCBOOK
+  end
 end
 
 input_files_for_xml = proc do |xml_filename|
