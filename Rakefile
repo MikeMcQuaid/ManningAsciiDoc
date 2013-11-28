@@ -33,6 +33,8 @@ BOOK_XML_FILES = BOOK_XML_PATHS.sub("#{OUTPUT_PATH}/", '')
 BOOK_IMAGES = FileList["#{INPUT_PATH}/**/*.png"]
 BOOK_OUTPUT_IMAGES = BOOK_IMAGES.sub(INPUT_PATH, OUTPUT_PATH)
 
+MAX_CODE_LINE_LENGTH = 72
+
 task :default => :html5
 task :all     => [:html5, :pdf]
 task :html5   => BOOK_HTML5
@@ -60,9 +62,32 @@ def validate file
   document = Nokogiri::XML IO.read file
   xsd = Nokogiri::XML::Schema IO.read BOOK_XSD rescue nil
   return unless xsd
+
   errors = xsd.validate document
   errors.each {|error| puts "#{file}:#{error.line}\n#{error}\n" }
-  raise 'XML schema validation failed!' if errors.any?
+  validation_errors = errors.any?
+
+  ids = []
+  document.search("//@id").each do |id_attribute|
+    id = id_attribute.text
+    if ids.include? id
+      puts "#{file}:#{id_attribute.line}\nDuplicate ID: #{id}\n"
+      validation_errors ||= true
+    end
+    ids << id
+  end
+
+  line_too_long_message = "Code line too long (>#{MAX_CODE_LINE_LENGTH} characters)"
+  document.search('//xmlns:programlisting').each do |programlisting|
+    programlisting.text.lines.each_with_index do |line, index|
+      next unless line.sub(/\s+$/, '').length > MAX_CODE_LINE_LENGTH
+      line_number = programlisting.parent.line + index + 1
+      puts "#{file}:#{line_number}\n#{line_too_long_message}\n#{line}\n"
+      validation_errors ||= true
+    end
+  end
+
+  raise 'Manning XML validation failed!' if validation_errors
 end
 
 def asciidoctor backend, output_file, *files
