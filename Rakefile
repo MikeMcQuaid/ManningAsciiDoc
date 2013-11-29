@@ -30,7 +30,7 @@ BOOK_PATHS = FileList["#{INPUT_PATH}/*.*"].exclude(BOOK_TITLE)
 BOOK_FILES = BOOK_PATHS.sub("#{INPUT_PATH}/", '')
 BOOK_XML_PATHS = BOOK_PATHS.sub(INPUT_PATH, OUTPUT_PATH).ext('.xml')
 BOOK_XML_FILES = BOOK_XML_PATHS.sub("#{OUTPUT_PATH}/", '')
-BOOK_IMAGES = FileList["#{INPUT_PATH}/**/*.png"]
+BOOK_IMAGES = FileList["#{INPUT_PATH}/**/*.{eps,png}"]
 BOOK_OUTPUT_IMAGES = BOOK_IMAGES.sub(INPUT_PATH, OUTPUT_PATH)
 
 MAX_CODE_LINE_LENGTH = 72
@@ -140,11 +140,21 @@ rule '.xml' => [input_files_for_xml, BOOK_XSD] do |input|
   validate xml
 end
 
-rule /#{OUTPUT_DIRECTORY}\/.+\.png/ \
+rule /#{OUTPUT_DIRECTORY}\/.+\.(eps|png)/ \
      => proc {|f| f.sub(OUTPUT_PATH, INPUT_PATH) } do |input|
   output_image = input.name
   FileUtils.mkdir_p File.dirname(output_image)
   FileUtils.cp input.source, output_image
+
+  if File.extname(output_image) == '.eps'
+    output_base = output_image.sub(/\.eps$/, '')
+    output_pdf = "#{output_base}.pdf"
+    sh 'pstopdf', output_image, output_pdf
+    output_png = "#{output_base}.png"
+    sh 'sips', output_pdf, '-s', 'format', 'png', '-s', 'dpiHeight', '72',
+                           '-s', 'dpiWidth', '72', '--out', output_png
+    FileUtils.rm output_pdf
+  end
 end
 
 file BOOK_XSD => OUTPUT_DIRECTORY do
