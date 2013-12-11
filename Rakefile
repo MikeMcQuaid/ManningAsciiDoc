@@ -26,7 +26,8 @@ BOOK_XSLT = "#{FileUtils.pwd}/docbook-to-manning-book.xslt"
 BOOK_SCHEMA = 'https://author.manning.com/resources/schemas/manning-book.xsd'
 
 BOOK_TITLE = "#{INPUT_PATH}/Title.adoc"
-BOOK_PATHS = FileList["#{INPUT_PATH}/*.*"].exclude(BOOK_TITLE)
+BOOK_README = "#{INPUT_PATH}/README.md"
+BOOK_PATHS = FileList["#{INPUT_PATH}/*.*"].exclude(BOOK_TITLE).exclude(BOOK_README)
 BOOK_FILES = BOOK_PATHS.sub("#{INPUT_PATH}/", '')
 BOOK_XML_PATHS = BOOK_PATHS.sub(INPUT_PATH, OUTPUT_PATH).ext('.xml')
 BOOK_XML_FILES = BOOK_XML_PATHS.sub("#{OUTPUT_PATH}/", '')
