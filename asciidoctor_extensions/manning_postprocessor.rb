@@ -44,6 +44,12 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
       end
     end
 
+    nodes('appendix').each do |appendix|
+      part = appendix.parent
+      next unless part.name == 'part'
+      appendix.parent = part.parent
+    end
+
     nodes('formalpara/para/screen').each do |screen|
       para = screen.parent
       formalpara = para.parent
