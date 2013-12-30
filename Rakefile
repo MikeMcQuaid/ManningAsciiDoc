@@ -34,7 +34,7 @@ BOOK_XML_FILES = BOOK_XML_PATHS.sub("#{OUTPUT_PATH}/", '')
 BOOK_IMAGES = FileList["#{INPUT_PATH}/**/*.{eps,png}"]
 BOOK_OUTPUT_IMAGES = BOOK_IMAGES.sub(INPUT_PATH, OUTPUT_PATH)
 
-MAX_CODE_LINE_LENGTH = 72
+MAX_CODE_LINE_LENGTH = 71
 
 task :default => :html5
 task :all     => [:html5, :pdf]
