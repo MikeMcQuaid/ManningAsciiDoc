@@ -23,7 +23,7 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
     root = @document.root
     return output unless root
 
-    root.name = 'chapter' if root.name == 'preface'
+    root.name = 'chapter' if root.name == 'preface' or root.name == 'appendix'
     root.default_namespace = BOOK_XMLNS
 
     ELEMENTS_MAP.each {|path, new_name| rename path, new_name }
