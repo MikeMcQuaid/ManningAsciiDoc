@@ -7,3 +7,4 @@ vendor/
 .gitmodules
 .ruby-version
 book.*
+*.pdf
