@@ -165,5 +165,5 @@ end
 
 directory OUTPUT_DIRECTORY
 
-CLEAN.include FileList["#{OUTPUT_DIRECTORY}/{*.html,*.xml,book.pdf,*/}",
+CLEAN.include FileList["#{OUTPUT_DIRECTORY}/{*.html,*.xml,*.pdf,*/}",
                        "book.*"]
