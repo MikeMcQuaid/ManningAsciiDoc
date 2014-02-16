@@ -166,4 +166,4 @@ end
 directory OUTPUT_DIRECTORY
 
 CLEAN.include FileList["#{OUTPUT_DIRECTORY}/{*.html,*.xml,*.pdf,*/}",
-                       "book.*"]
+                       "book.*", "*.pdf"]
