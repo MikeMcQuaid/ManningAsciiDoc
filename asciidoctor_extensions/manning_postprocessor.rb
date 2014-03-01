@@ -50,20 +50,29 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
       appendix.parent = part.parent
     end
 
-    nodes('formalpara/para/screen').each do |screen|
+    nodes('programlisting//@language').each do |language|
+      language.name = 'format'
+    end
+
+    formal_screens = nodes('formalpara/para/screen') +
+                     nodes('formalpara/para/programlisting')
+    formal_screens.each do |screen|
       para = screen.parent
       formalpara = para.parent
       screen.name = 'programlisting'
       screen.parent = formalpara
+      screen.remove_attribute('linenumbering')
       formalpara.name = 'example'
       para.remove
     end
 
-    nodes('screen').each do |screen|
+    screens = nodes('screen') + nodes('programlisting')
+    screens.each do |screen|
       informalexample = @document.create_element 'informalexample'
       screen.previous = informalexample
       screen.name = 'programlisting'
       screen.parent = informalexample
+      screen.remove_attribute('linenumbering')
     end
 
     nodes('calloutlist').each do |calloutlist|
