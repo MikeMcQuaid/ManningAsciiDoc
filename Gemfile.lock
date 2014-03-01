@@ -5,8 +5,13 @@ GEM
     mini_portile (0.5.2)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
+    posix-spawn (0.3.8)
+    pygments.rb (0.5.4)
+      posix-spawn (~> 0.3.6)
+      yajl-ruby (~> 1.1.0)
     rake (10.1.1)
     tilt (2.0.0)
+    yajl-ruby (1.1.0)
 
 PLATFORMS
   ruby
@@ -14,5 +19,6 @@ PLATFORMS
 DEPENDENCIES
   asciidoctor
   nokogiri
+  pygments.rb
   rake
   tilt
