@@ -104,6 +104,7 @@ def asciidoctor backend, output_file, *files
     :to_file => output_file,
     :safe => Asciidoctor::SafeMode::UNSAFE,
   }
+  input.gsub!(/<<.*#/, '<<')
   Asciidoctor.render input, options
 end
 
