@@ -31,7 +31,9 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
     remove 'bookinfo/date'
     remove 'bookinfo/authorinitials'
     remove 'mediaobject/caption'
-    remove_attribute 'orderedlist', 'numeration'
+    remove_attributes 'orderedlist', 'numeration'
+    remove_attributes 'screen', 'linenumbering'
+    remove_attributes 'programlisting', 'linenumbering'
 
     nodes('part').each do |part|
       partintro = part.search("./partintro").first
@@ -61,7 +63,6 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
       formalpara = para.parent
       screen.name = 'programlisting'
       screen.parent = formalpara
-      screen.remove_attribute('linenumbering')
       formalpara.name = 'example'
       para.remove
     end
@@ -72,7 +73,6 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
       screen.previous = informalexample
       screen.name = 'programlisting'
       screen.parent = informalexample
-      screen.remove_attribute('linenumbering')
     end
 
     nodes('calloutlist').each do |calloutlist|
@@ -100,7 +100,11 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
     nodes(path).each &:remove
   end
 
-  def remove_attribute path, attribute
-    nodes(path).each {|node| node.remove_attribute attribute }
+  def remove_attributes path, *attributes
+    nodes(path).each do |node|
+      attributes.each do |attribute|
+        node.remove_attribute attribute
+      end
+    end
   end
 end
