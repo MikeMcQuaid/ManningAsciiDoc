@@ -34,6 +34,8 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
     remove_attributes 'orderedlist', 'numeration'
     remove_attributes 'screen', 'linenumbering'
     remove_attributes 'programlisting', 'linenumbering'
+    remove_attributes 'table', 'frame', 'rowsep', 'colsep'
+    remove_attributes 'entry', 'align', 'valign'
 
     nodes('part').each do |part|
       partintro = part.search("./partintro").first
@@ -80,6 +82,15 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
       next unless example.name.end_with? 'example'
       calloutlist.parent = example
     end
+
+    nodes('thead/row/entry').each do |entry|
+      new_entry = @document.create_element 'entry'
+      entry.previous = new_entry
+      entry.name = 'para'
+      entry.parent = new_entry
+    end
+
+    nodes('colspec').each {|colspec| colspec.remove }
 
     output = @document.to_xml(:encoding => 'UTF-8', :indent => 2)
     output.gsub! ' standalone="no"', ''
