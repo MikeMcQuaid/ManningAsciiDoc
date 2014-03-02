@@ -45,21 +45,6 @@ task :pdf     => BOOK_PDF
 task :html    => :html5
 task :xml     => :docbook
 
-task :http => BOOK_HTML5 do
-  require 'webrick'
-
-  server = WEBrick::HTTPServer.new \
-    :BindAddress => "localhost",
-    :Port => 8080,
-    :DocumentRoot => OUTPUT_PATH
-
-  trap "INT" do
-    server.shutdown
-  end
-
-  server.start
-end
-
 def validate file
   document = Nokogiri::XML IO.read file
   xsd = Nokogiri::XML::Schema IO.read BOOK_XSD rescue nil
