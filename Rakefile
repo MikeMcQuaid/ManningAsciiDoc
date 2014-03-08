@@ -57,6 +57,10 @@ def validate file
   ids = []
   document.search("//@id").each do |id_attribute|
     id = id_attribute.text
+    if id.include? "."
+      puts "#{file}:#{id_attribute.line}\nInvalid ID (contains dot): #{id}\n"
+      validation_errors ||= true
+    end
     if ids.include? id
       puts "#{file}:#{id_attribute.line}\nDuplicate ID: #{id}\n"
       validation_errors ||= true
