@@ -108,7 +108,7 @@ end
 
 rule '.pdf' => '.xml' do |input|
   basename = File.basename(input.name, '.pdf')
-  sh 'AAMakePDF/createPDF.sh', input.source, input.name, 'AAMakePDF/'
+  sh 'AAMakePDF/AAMakePDF.sh', input.source, input.name, 'AAMakePDF/'
   FileUtils.rm "#{OUTPUT_DIRECTORY}/#{basename}.xml.temp.xml"
   FileUtils.rm 'c:\sw\text.txt'
   FileUtils.rm 'AAMakePDF/temp.xml'
