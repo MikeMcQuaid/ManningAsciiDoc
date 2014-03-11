@@ -66,14 +66,12 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
       screen.name = 'programlisting'
       screen.parent = formalpara
       formalpara.name = 'example'
-      formalpara['annotations'] = 'below'
       para.remove
     end
 
     screens = nodes('screen') + nodes('programlisting')
     screens.each do |screen|
       informalexample = @document.create_element 'informalexample'
-      informalexample['annotations'] = 'below'
       screen.previous = informalexample
       screen.name = 'programlisting'
       screen.parent = informalexample
