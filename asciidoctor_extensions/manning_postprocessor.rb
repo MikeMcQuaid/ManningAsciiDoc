@@ -43,7 +43,8 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
         partintro = @document.create_element 'partintro'
         part.children.first.next = partintro
       end
-      part.search("./para").each do |para|
+      intro = part.search("./para") + part.search("./itemizedlist")
+      intro.each do |para|
         para.parent = partintro
       end
     end
