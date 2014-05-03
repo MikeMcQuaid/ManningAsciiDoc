@@ -49,12 +49,6 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
       end
     end
 
-    nodes('appendix').each do |appendix|
-      part = appendix.parent
-      next unless part.name == 'part'
-      appendix.parent = part.parent
-    end
-
     nodes('programlisting//@language').each do |language|
       language.name = 'format'
     end
@@ -78,6 +72,12 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
       screen.previous = informalexample
       screen.name = 'programlisting'
       screen.parent = informalexample
+    end
+
+    nodes('appendix').each do |appendix|
+      part = appendix.parent
+      next unless part.name == 'part'
+      appendix.parent = part.parent
     end
 
     nodes('calloutlist').each do |calloutlist|
