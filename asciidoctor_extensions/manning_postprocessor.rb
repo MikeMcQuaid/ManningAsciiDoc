@@ -93,6 +93,22 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
       entry.parent = new_entry
     end
 
+    nodes('xref').each do |xref|
+      id = xref.attributes["linkend"]
+      target = @document.search("*[@id='#{id}']").first
+      unless target
+        next if root.name == 'chapter'
+        raise "Cannot resolve XREF: #{id}"
+      end
+
+      type = case target.name.to_sym
+      when :example then "Listing"
+      else target.name.capitalize
+      end
+
+      xref.previous = "#{type} "
+    end
+
     nodes('colspec').each {|colspec| colspec.remove }
 
     output = @document.to_xml(:encoding => 'UTF-8', :indent => 2)
