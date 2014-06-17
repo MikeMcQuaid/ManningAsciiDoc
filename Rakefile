@@ -94,7 +94,7 @@ def asciidoctor backend, output_file, *files
     :to_file => output_file,
     :safe => Asciidoctor::SafeMode::UNSAFE,
   }
-  input.gsub!(/<<[^#<>]+#/, '<<')
+  input.gsub!(/<<[^#<>]+#/, '<<') if backend == :html5
   Asciidoctor.render input, options
 end
 
