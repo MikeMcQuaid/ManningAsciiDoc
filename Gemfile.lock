@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/mikemcquaid/guard-webrick.git
-  revision: f25a38d7a06d09f7d87301b9da1ad6d8395acc36
+  revision: 84d116bc2894bcc17645cb23f04aa0642fd1191e
   branch: support-newer-guard
   specs:
     guard-webrick (0.1.5.dev)
