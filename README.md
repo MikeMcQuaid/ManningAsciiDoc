@@ -32,18 +32,7 @@ If you wish to generate PDF files please contact Manning and obtain a copy of
 `AAMakePDF` and download and extract it into the `AAMakePDF` directory (so
 there should be a file named `./AAMakePDF/createPDF.sh`).
 
-ManningAsciiDoc assumes that your book's source files are in an `./input/`
-subdirectory and it should look something like this:
-```
-input/00-Preface.adoc
-input/01-01-Part1Introduction.adoc
-input/01-Chapter1.adoc
-input/02-Chapter2.adoc
-input/04-02-Part2Introduction.adoc
-input/04-Chapter3.adoc
-input/images/image.png
-input/Title.adoc
-```
+ManningAsciiDoc assumes that your book's source files a particular format. I've provided a sample repository for this at https://github.com/mikemcquaid/SampleManningAsciiDocBook.
 
 You can see (and customize) the various assumptions that are made in the
 [Rakefile](https://github.com/mikemcquaid/ManningAsciiDoc/blob/master/Rakefile).
