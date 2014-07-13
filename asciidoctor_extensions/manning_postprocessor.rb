@@ -93,6 +93,26 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
       entry.parent = new_entry
     end
 
+    nodes('attribution').each do |attribution|
+      citetitle = attribution.element_children.first
+
+      attribution_sections = []
+      attribution.children.each do |child|
+        child_text = child.text.strip
+        next if child_text.empty?
+        attribution_sections << child.text.strip
+      end
+
+      attribution.content = attribution_sections.join ', '
+    end
+
+    nodes('blockquote').each do |blockquote|
+      next if blockquote.parent.name == 'para'
+      para = @document.create_element 'para'
+      para.parent = blockquote.parent
+      blockquote.parent = para
+    end
+
     nodes('xref').each do |xref|
       id = xref.attributes['linkend']
       target = @document.search("*[@id='#{id}']").first
