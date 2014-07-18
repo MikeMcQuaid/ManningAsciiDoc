@@ -109,7 +109,7 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
     nodes('blockquote').each do |blockquote|
       next if blockquote.parent.name == 'para'
       para = @document.create_element 'para'
-      para.parent = blockquote.parent
+      blockquote.previous = para
       blockquote.parent = para
     end
 
