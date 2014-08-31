@@ -31,6 +31,7 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
     remove 'bookinfo/date'
     remove 'bookinfo/authorinitials'
     remove 'mediaobject/caption'
+    remove 'inlinemediaobject/caption'
     remove_attributes 'orderedlist', 'numeration'
     remove_attributes 'screen', 'linenumbering'
     remove_attributes 'programlisting', 'linenumbering'
