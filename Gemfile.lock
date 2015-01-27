@@ -1,18 +1,6 @@
-GIT
-  remote: https://github.com/mikemcquaid/guard-webrick.git
-  revision: 84d116bc2894bcc17645cb23f04aa0642fd1191e
-  branch: support-newer-guard
-  specs:
-    guard-webrick (0.1.5.dev)
-      ffi
-      guard (>= 1.0)
-      launchy (~> 2.1.0)
-      spoon (~> 0.0.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.3.6)
     asciidoctor (0.1.4)
     celluloid (0.15.2)
       timers (~> 1.1.0)
@@ -29,16 +17,18 @@ GEM
       lumberjack (~> 1.0)
       pry (>= 0.9.12)
       thor (>= 0.18.1)
+    guard-compat (1.2.1)
     guard-livereload (2.3.0)
       em-websocket (~> 0.5)
       guard (~> 2.0)
       multi_json (~> 1.8)
+    guard-process (1.2.1)
+      guard-compat (~> 1.2, >= 1.2.1)
+      spoon (~> 0.0.1)
     guard-rake (0.0.9)
       guard
       rake
     http_parser.rb (0.6.0)
-    launchy (2.1.2)
-      addressable (~> 2.3)
     listen (2.7.9)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
@@ -75,8 +65,8 @@ PLATFORMS
 DEPENDENCIES
   asciidoctor
   guard-livereload
+  guard-process
   guard-rake
-  guard-webrick!
   nokogiri
   pygments.rb
   rake

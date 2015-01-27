@@ -6,5 +6,5 @@ guard 'livereload' do
   watch %r{output/.+\.(html|png)}
 end
 
-guard 'webrick', :docroot => 'output' do
+guard 'process', :name => 'webrick', :command => 'ruby -run -e httpd output/ -p 3000' do
 end
