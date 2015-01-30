@@ -38,6 +38,12 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
     remove_attributes 'table', 'frame', 'rowsep', 'colsep'
     remove_attributes 'entry', 'align', 'valign'
 
+    root['label'] = '' if root.name == 'chapter'
+    label_nodes = nodes('preface') + nodes('chapter') + nodes('appendix')
+    label_nodes.each do |node|
+      node['label'] = ''
+    end
+
     nodes('part').each do |part|
       partintro = part.search("./partintro").first
       unless partintro
