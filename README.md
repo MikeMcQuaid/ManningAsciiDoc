@@ -18,6 +18,8 @@ various other features. It has been tested with varying AsciiDoc input but may
 need fixes for your book ([patches are
 welcome](https://github.com/mikemcquaid/ManningAsciiDoc/pulls)).
 
+[![Build Status](https://travis-ci.org/mikemcquaid/ManningAsciiDoc.svg?branch=master)](https://travis-ci.org/mikemcquaid/ManningAsciiDoc)
+
 ## Usage
 Ensure you have `ruby`, `git` and `libxml` installed on your system and setup
 ManningAsciiDoc by running:

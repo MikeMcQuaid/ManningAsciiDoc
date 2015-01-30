@@ -1,0 +1,5 @@
+language: ruby
+rvm:
+  - 2.1.2
+before_script: git clone https://github.com/mikemcquaid/SampleManningAsciiDocBook input
+script: bundle exec rake html5 docbook
