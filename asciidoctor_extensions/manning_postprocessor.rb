@@ -9,7 +9,7 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
     :textobject => :caption,
   }
 
-  def process output
+  def process _, output
     return output if output.start_with? '<!DOCTYPE html>'
 
     if output.start_with? '<simpara'
@@ -17,10 +17,10 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
     end
     output.gsub! /<!DOCTYPE.*>/, ''
 
-    @document = Nokogiri::XML output, &:noblanks
-    @document.remove_namespaces!
+    @@document = Nokogiri::XML output, &:noblanks
+    @@document.remove_namespaces!
 
-    root = @document.root
+    root = @@document.root
     return output unless root
 
     root.name = 'chapter' if root.name == 'preface' or root.name == 'appendix'
@@ -47,7 +47,7 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
     nodes('part').each do |part|
       partintro = part.search("./partintro").first
       unless partintro
-        partintro = @document.create_element 'partintro'
+        partintro = @@document.create_element 'partintro'
         part.children.first.next = partintro
       end
       intro = part.search("./para") + part.search("./itemizedlist")
@@ -74,7 +74,7 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
 
     screens = nodes('screen') + nodes('programlisting')
     screens.each do |screen|
-      informalexample = @document.create_element 'informalexample'
+      informalexample = @@document.create_element 'informalexample'
       setup_long_annotations informalexample
       screen.previous = informalexample
       screen.name = 'programlisting'
@@ -94,7 +94,7 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
     end
 
     nodes('thead/row/entry').each do |entry|
-      new_entry = @document.create_element 'entry'
+      new_entry = @@document.create_element 'entry'
       entry.previous = new_entry
       entry.name = 'para'
       entry.parent = new_entry
@@ -115,14 +115,14 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
 
     nodes('blockquote').each do |blockquote|
       next if blockquote.parent.name == 'para'
-      para = @document.create_element 'para'
+      para = @@document.create_element 'para'
       blockquote.previous = para
       blockquote.parent = para
     end
 
     nodes('xref').each do |xref|
       id = xref.attributes['linkend']
-      target = @document.search("*[@id='#{id}']").first
+      target = @@document.search("*[@id='#{id}']").first
       target_type = target.name if target
 
       target_type = case target_type
@@ -136,7 +136,7 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
 
     nodes('colspec').each {|colspec| colspec.remove }
 
-    output = @document.to_xml(:encoding => 'UTF-8', :indent => 2)
+    output = @@document.to_xml(:encoding => 'UTF-8', :indent => 2)
     output.gsub! ' standalone="no"', ''
     output
   end
@@ -144,7 +144,7 @@ class ManningPostprocessor < Asciidoctor::Extensions::Postprocessor
   private
 
   def nodes path
-    @document.search "//#{path}"
+    @@document.search "//#{path}"
   end
 
   def rename path, new_name
