@@ -133,8 +133,8 @@ rule '.xml' => [input_files_for_xml, BOOK_XSD] do |input|
   validate xml
 end
 
-rule /#{OUTPUT_DIRECTORY}\/.+\.(eps|png)/ \
-     => proc {|f| f.sub(OUTPUT_PATH, INPUT_PATH) } do |input|
+rule(/#{OUTPUT_DIRECTORY}\/.+\.(eps|png)/ \
+     => proc {|f| f.sub(OUTPUT_PATH, INPUT_PATH) }) do |input|
   output_image = input.name
   FileUtils.mkdir_p File.dirname(output_image)
   FileUtils.cp input.source, output_image
