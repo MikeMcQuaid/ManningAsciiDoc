@@ -49,7 +49,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    pygments.rb (1.2.0)
+    pygments.rb (1.2.1)
       multi_json (>= 1.0.0)
     rake (12.3.0)
     rb-fsevent (0.9.8)
